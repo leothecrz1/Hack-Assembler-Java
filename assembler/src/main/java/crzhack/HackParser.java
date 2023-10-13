@@ -2,6 +2,7 @@ package crzhack;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,17 +24,24 @@ public class HackParser
     private int lineNumber;
 
     private File inputFile;
+    private FileReader inputReader;
 
     public HackParser(String filepath)
     {
         lineNumber = 0;
         symbolTable = new HashMap<String, Integer>();
 
-        inputFile = new File(filepath);
+        try 
+        {
+            inputReader = new FileReader( new File(filepath) );
+        } 
+        catch (FileNotFoundException e) 
+        {
+            e.printStackTrace();
+        }
+
+
         fillSymbolTableDefaults();
-
-        parseSymbols();
-
     }
 
     private void fillSymbolTableDefaults()
@@ -61,43 +69,37 @@ public class HackParser
         symbolTable.put("R15", 15);
         symbolTable.put("SCREEN", 16384);
         symbolTable.put("KBD", 24576);
-    }   
+    } 
 
-    private void parseSymbols()
+    public bool isAtEndOfFile()
     {
-        try(FileReader tesFileReader = new FileReader(inputFile))
-        {
-            BufferedReader reader = new BufferedReader(tesFileReader);
-
-            String line;
-            while( (line = reader.readLine() ) != null)
-            {
-                line = line.trim();
-                char c = line.charAt(0);
-                
-                switch (c) 
-                {
-                    case '(':
-                        {
-                            int index = line.indexOf(')');
-                            
-                            break;
-                        }
-                    case '@':
-                        {
-                            break;
-                        }
-                    default:
-                        continue;
-                }
-            }
-            reader.close();
-        }
-        catch (IOException e) 
-        {
-            
-        }
-        
+        inputReader.
     }
+
+    public int getLineNumber() 
+    {
+        return lineNumber;
+    }
+    public String getComp() 
+    {
+        return comp;
+    }
+    public String getDest() 
+    {
+        return dest;
+    }
+    public String getJump() 
+    {
+        return jump;
+    }
+    public String getSymbol() 
+    {
+        return symbol;
+    }
+    public InstructionTypes getType()
+    {
+        return type;
+    }
+    
 
 }
