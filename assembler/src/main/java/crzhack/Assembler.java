@@ -99,16 +99,8 @@ public class Assembler
                     sb.append( coder.compToBin( parser.getComp() ) );
                     sb.append( coder.destToBin( parser.getDest() ) );
                     sb.append( coder.jumpToBin( parser.getJump() ) );
-                    sb.append( "\n " );
-
-                    try 
-                    {
-                        fileWriter.write(sb.toString());
-                    } 
-                    catch (IOException e) 
-                    {
-                        e.printStackTrace();
-                    }
+                    sb.append( "\n" );
+                    try{fileWriter.write(sb.toString());}catch (IOException e){e.printStackTrace();}
                     break;
             
                 default:
@@ -116,6 +108,6 @@ public class Assembler
             }
 
         }
-
+        try{fileWriter.close();} catch (IOException e) {e.printStackTrace();}
     }
 }

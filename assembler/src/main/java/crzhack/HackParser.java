@@ -124,7 +124,7 @@ public class HackParser
         if(jumpBreakPoint == -1)
         {
             dest = activeLine.substring(0, destBreakPoint);
-            comp = activeLine.substring(jumpBreakPoint+1);
+            comp = activeLine.substring(destBreakPoint+1);
             return;
         }
 
@@ -174,6 +174,7 @@ public class HackParser
 
     private void parseSymbols()
     {
+        int variableRamPos = 16;
         while(!isAtEndOfFile())
         {
             if(type == InstructionTypes.A_INSTRUCTION)
@@ -183,7 +184,8 @@ public class HackParser
                 } catch (NumberFormatException ignore) {
                     if( symbolTable.get(symbol) == null)
                     {
-                        symbolTable.put(symbol, lineNumber);
+                        symbolTable.put(symbol, variableRamPos++);
+                        System.out.println(symbol + " " + variableRamPos);
                     }
                 }
             }
@@ -195,8 +197,12 @@ public class HackParser
             int pIndexTwo = activeLine.indexOf(')');
             String str = activeLine.substring(pIndex+1, pIndexTwo).trim();
             
-            if( symbolTable.put(str, lineNumber) == null )
+            if( symbolTable.get(str) == null )
+            {
+                symbolTable.put(str, lineNumber);
                 System.out.println(symbol + " " + lineNumber);
+            }
+            
         }
 
         try 

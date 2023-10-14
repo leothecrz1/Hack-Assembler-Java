@@ -80,7 +80,7 @@ public class HackCoder
                     System.exit(1);
             }  
         }
-        return out.toString();
+        return String.valueOf(out);
     }
 
     public String jumpToBin(String str)
@@ -111,7 +111,7 @@ public class HackCoder
                     System.exit(1);
             }        
         }
-        return out.toString();
+        return String.valueOf(out);
     }
 
 }
