@@ -23,6 +23,7 @@ public class HackParser
 
     private int lineNumber;
 
+    private File input;
     private FileReader inputReader;
     private BufferedReader bufferedReader;
 
@@ -33,7 +34,8 @@ public class HackParser
 
         try 
         {
-            inputReader = new FileReader( new File(filepath) );
+            input = new File(filepath);
+            inputReader = new FileReader( input );
             bufferedReader = new BufferedReader(inputReader);
         } 
         catch (FileNotFoundException e) 
@@ -186,8 +188,8 @@ public class HackParser
                 }
             }
 
-            if(type != InstructionTypes.C_INSTRUCTION)
-                return;
+            if(type != InstructionTypes.L_INSTRUCTION)
+                continue;
 
             int pIndex = activeLine.indexOf('(');
             int pIndexTwo = activeLine.indexOf(')');
@@ -199,7 +201,12 @@ public class HackParser
 
         try 
         {
-            inputReader.reset();
+            bufferedReader.close();
+            inputReader.close();
+
+            inputReader = new FileReader( input  );
+            bufferedReader = new BufferedReader(inputReader);
+
             activeLine = "";
             resetFields();
             lineNumber = 0;
@@ -228,6 +235,18 @@ public class HackParser
         return true;
     }
 
+    public boolean hasSymbol(String str)
+    {
+        if(symbolTable.get(str) == null)
+            return false;
+        return true;
+    }
+
+    public int getSymVal(String sym)
+    {
+        return symbolTable.get(sym);
+    }
+
     public int getLineNumber() 
     {
         return lineNumber;
@@ -253,5 +272,29 @@ public class HackParser
         return type;
     }
     
+    public String getInfo()
+    {
+        StringBuilder str = new StringBuilder();
+
+        str.append(getLineNumber());
+        str.append(" ");
+
+        str.append(getType());
+        str.append(" ");
+
+        str.append(getSymbol());
+        str.append(" ");
+
+        str.append(getDest());
+        str.append(" ");
+
+        str.append(getComp());
+        str.append(" ");
+
+        str.append(getJump());
+        str.append(" ");
+
+        return str.toString();
+    }
 
 }
