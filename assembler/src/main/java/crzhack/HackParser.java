@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class HackParser 
 {
@@ -175,18 +176,24 @@ public class HackParser
     private void parseSymbols()
     {
         int variableRamPos = 16;
+        Stack<String> aSymbols = new Stack<>();
+
         while(!isAtEndOfFile())
         {
             if(type == InstructionTypes.A_INSTRUCTION)
             {
-                try {
+                try 
+                {
                     Integer.parseInt(symbol);
-                } catch (NumberFormatException ignore) {
-                    if( symbolTable.get(symbol) == null)
-                    {
-                        symbolTable.put(symbol, variableRamPos++);
-                        System.out.println(symbol + " " + variableRamPos);
-                    }
+                } 
+                catch (NumberFormatException ignore) 
+                {
+                    aSymbols.push(new String(symbol));
+                    // if( symbolTable.get(symbol) == null)
+                    // {
+                    //     symbolTable.put(symbol, variableRamPos++);
+                    //     System.out.println(symbol + " " + variableRamPos);
+                    // }
                 }
             }
 
@@ -197,12 +204,26 @@ public class HackParser
             int pIndexTwo = activeLine.indexOf(')');
             String str = activeLine.substring(pIndex+1, pIndexTwo).trim();
             
-            if( symbolTable.get(str) == null )
+            if( !symbolTable.containsKey(str) )
             {
                 symbolTable.put(str, lineNumber);
-                System.out.println(symbol + " " + lineNumber);
+                System.out.println(str + " " + lineNumber);
             }
             
+        }
+
+        String str;
+        
+        while( !aSymbols.isEmpty() )
+        {
+            str = aSymbols.pop();
+
+            if( symbolTable.containsKey(str) )
+                continue;
+
+            symbolTable.put(str, variableRamPos++);
+            System.out.println(str + " " + variableRamPos);  
+
         }
 
         try 

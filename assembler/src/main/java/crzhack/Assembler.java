@@ -13,8 +13,7 @@ public class Assembler
 {
     public static void main( String[] args )
     {
-        args = new String[1];
-        args[0] = "/Users/Repo/Java/Hack-Assembler-Java/test.txt";
+        
         if(args.length != 1)
         {
             System.out.println("Invalid Argument Count");
