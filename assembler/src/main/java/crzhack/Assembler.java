@@ -17,7 +17,8 @@ public class Assembler
      */
     public static void main( String[] args )
     {
-        
+        args = new String[1];
+        args[0] = "/Users/School/Year4/ComputerArchitecture/nand2tetris/nand2tetris/projects/06/max/max.asm";
         if(args.length != 1)
         {
             System.out.println("Invalid Argument Count");

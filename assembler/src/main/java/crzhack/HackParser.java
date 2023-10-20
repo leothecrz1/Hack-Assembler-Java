@@ -115,7 +115,7 @@ public class HackParser
     private void CINS()
     {
         activeLine = trimComments(activeLine);
-        activeLine.trim();
+        activeLine = activeLine.trim();
         type = InstructionTypes.C_INSTRUCTION;
 
         int destBreakPoint = activeLine.indexOf('=');
