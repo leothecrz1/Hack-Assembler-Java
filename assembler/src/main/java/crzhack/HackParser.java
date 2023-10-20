@@ -154,7 +154,7 @@ public class HackParser
         activeLine = trimComments(activeLine);
         activeLine = activeLine.trim();
         type = InstructionTypes.L_INSTRUCTION;
-        symbol = activeLine.substring(1, activeLine.length()-2);
+        symbol = activeLine.substring(1, activeLine.length()-1);
     }
     /**
      * Set the instruction type based on input
