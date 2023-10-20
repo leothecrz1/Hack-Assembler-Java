@@ -46,7 +46,11 @@ public class HackParser
         fillSymbolTableDefaults();
         parseSymbols();
     }
-
+    /**
+     * Trim comments utility function
+     * @param str
+     * @return str with no comments
+     */
     private String trimComments(String str)
     {
         int index = str.indexOf("//");
@@ -55,7 +59,9 @@ public class HackParser
 
         return str.substring(0, index);
     }
-
+    /**
+     * Prefill table with default syms
+     */
     private void fillSymbolTableDefaults()
     {
         symbolTable.put("SP", 0);
@@ -82,7 +88,9 @@ public class HackParser
         symbolTable.put("SCREEN", 16384);
         symbolTable.put("KBD", 24576);
     } 
-
+    /**
+     * Reset fields and Instruction Type is set to UNSET
+     */
     private void resetFields()
     {
         symbol = "";
@@ -91,7 +99,9 @@ public class HackParser
         jump = "";
         type = InstructionTypes.UNSET;
     }
-
+    /**
+     * Handles A instruction
+     */
     private void AINS()
     {
         activeLine = trimComments(activeLine);
@@ -99,7 +109,9 @@ public class HackParser
         type = InstructionTypes.A_INSTRUCTION;
         symbol = activeLine.substring(1);
     }
-
+    /**
+     * Handles C instruction
+     */
     private void CINS()
     {
         activeLine = trimComments(activeLine);
@@ -134,7 +146,9 @@ public class HackParser
         jump = activeLine.substring(jumpBreakPoint+1);
 
     }
-
+    /**
+     * Handles L instruction
+     */
     private void LINS()
     {
         activeLine = trimComments(activeLine);
@@ -142,7 +156,9 @@ public class HackParser
         type = InstructionTypes.L_INSTRUCTION;
         symbol = activeLine.substring(1, activeLine.length()-2);
     }
-
+    /**
+     * Set the instruction type based on input
+     */
     private void setInstruction()
     {
         activeLine = activeLine.trim();
@@ -172,7 +188,9 @@ public class HackParser
                 break;
         }
     }
-
+    /**
+     * Scan file for all symbols
+     */
     private void parseSymbols()
     {
         int variableRamPos = 16;
@@ -181,21 +199,10 @@ public class HackParser
         while(!isAtEndOfFile())
         {
             if(type == InstructionTypes.A_INSTRUCTION)
-            {
-                try 
-                {
-                    Integer.parseInt(symbol);
-                } 
-                catch (NumberFormatException ignore) 
-                {
-                    aSymbols.push(new String(symbol));
-                    // if( symbolTable.get(symbol) == null)
-                    // {
-                    //     symbolTable.put(symbol, variableRamPos++);
-                    //     System.out.println(symbol + " " + variableRamPos);
-                    // }
-                }
-            }
+                try  { Integer.parseInt(symbol); }  //Check If Symbol Is NUM
+                catch (NumberFormatException ignore)  
+                { aSymbols.push(new String(symbol)); }
+            
 
             if(type != InstructionTypes.L_INSTRUCTION)
                 continue;
@@ -213,38 +220,32 @@ public class HackParser
         }
 
         String str;
-        
-        while( !aSymbols.isEmpty() )
+        while( !aSymbols.isEmpty() ) // Empty A_INS SYMBOLS
         {
             str = aSymbols.pop();
-
             if( symbolTable.containsKey(str) )
                 continue;
-
             symbolTable.put(str, variableRamPos++);
             System.out.println(str + " " + variableRamPos);  
-
         }
-
+        //RESET To Begining of file
         try 
         {
             bufferedReader.close();
             inputReader.close();
-
             inputReader = new FileReader( input  );
             bufferedReader = new BufferedReader(inputReader);
-
             activeLine = "";
             resetFields();
             lineNumber = 0;
         } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
+        catch (IOException e) {e.printStackTrace();}
 
     }
-
+    /**
+     * Advances to next line and check if parser is at the end of the file
+     * @return
+     */
     public boolean isAtEndOfFile()
     {
         try 
@@ -261,19 +262,22 @@ public class HackParser
         }
         return true;
     }
-
+    /**
+     * Check if Symbol str exist in the symbolTable
+     * @param str
+     * @return
+     */
     public boolean hasSymbol(String str)
     {
         if(symbolTable.get(str) == null)
             return false;
         return true;
     }
-
+    //GETTERS
     public int getSymVal(String sym)
     {
         return symbolTable.get(sym);
     }
-
     public int getLineNumber() 
     {
         return lineNumber;
@@ -297,8 +301,7 @@ public class HackParser
     public InstructionTypes getType()
     {
         return type;
-    }
-    
+    }  
     public String getInfo()
     {
         StringBuilder str = new StringBuilder();

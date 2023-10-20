@@ -11,6 +11,10 @@ import java.util.Scanner;
  */
 public class Assembler 
 {
+    /**
+     * Driver Code
+     * @param args first entry must be file path
+     */
     public static void main( String[] args )
     {
         
@@ -19,7 +23,6 @@ public class Assembler
             System.out.println("Invalid Argument Count");
             System.exit(0);
         }
-
         File file = new File(args[0]);
         if(!file.exists())
         {
@@ -41,6 +44,7 @@ public class Assembler
             
             file.delete();
         }
+
         FileWriter fileWriter = null;
         try 
         {
@@ -81,7 +85,7 @@ public class Assembler
                                 sb.append("\n");
                                 try { fileWriter.write(sb.toString()); } catch (IOException ex) { ex.printStackTrace(); }
                             }
-                            else
+                            else // No Symbol Found Error
                             {
                                 System.out.print("Symbol Could Not Be Found. Sym=");
                                 System.out.print( parser.getSymbol() );

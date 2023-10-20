@@ -44,6 +44,11 @@ public class HackCoder
         compTable.put("D|M", "1010101");
     }
 
+    /**
+     * Conver str to its compcode in binary.
+     * @param str
+     * @return
+     */
     public String compToBin(String str)
     {
         String result = compTable.get(str);
@@ -55,6 +60,11 @@ public class HackCoder
             return result; 
     }
 
+    /**
+     * Converts destination portion of instruction to binary
+     * @param str
+     * @return
+     */
     public String destToBin(String str)
     {
         char[] out = {'0','0','0'};
@@ -83,6 +93,11 @@ public class HackCoder
         return String.valueOf(out);
     }
 
+    /**
+     * Converts jump portion of instruction to binary
+     * @param str
+     * @return
+     */
     public String jumpToBin(String str)
     {
         char[] out = {'0','0','0'};
