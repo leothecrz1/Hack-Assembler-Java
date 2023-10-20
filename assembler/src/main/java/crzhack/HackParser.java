@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
+import java.util.LinkedList;
 
 public class HackParser 
 {
@@ -194,14 +194,14 @@ public class HackParser
     private void parseSymbols()
     {
         int variableRamPos = 16;
-        Stack<String> aSymbols = new Stack<>();
+        LinkedList<String> aSymbols = new LinkedList<>();
 
         while(!isAtEndOfFile())
         {
             if(type == InstructionTypes.A_INSTRUCTION)
                 try  { Integer.parseInt(symbol); }  //Check If Symbol Is NUM
                 catch (NumberFormatException ignore)  
-                { aSymbols.push(new String(symbol)); }
+                { aSymbols.add(new String(symbol)); }
             
 
             if(type != InstructionTypes.L_INSTRUCTION)
@@ -222,7 +222,7 @@ public class HackParser
         String str;
         while( !aSymbols.isEmpty() ) // Empty A_INS SYMBOLS
         {
-            str = aSymbols.pop();
+            str = aSymbols.pollFirst();
             if( symbolTable.containsKey(str) )
                 continue;
             symbolTable.put(str, variableRamPos++);
