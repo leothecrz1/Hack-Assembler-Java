@@ -29,7 +29,7 @@ public class Assembler
             System.exit(1);
         }
         
-        file = new File(args[0].substring(0,  args[0].indexOf('.')+1).concat("hack") );
+        file = new File(args[0].substring(0,  args[0].lastIndexOf('.')+1).concat("hack") );
         if(file.exists())
         {
             System.out.print(file.getName());
